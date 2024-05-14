@@ -14,4 +14,10 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
+
+    public function getImageUrlAttribute()
+    {
+        return env('APP_URL') . '/storage/' . $this->image;
+    }
+
 }

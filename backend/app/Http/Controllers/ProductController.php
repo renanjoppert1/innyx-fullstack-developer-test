@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -11,7 +12,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $data = Product::paginate();
+
+        $data->getCollection()->transform(function ($product) {
+            $product->image_url = $product->image_url;
+            return $product;
+        });
+
+        return response()->json($data);
     }
 
     /**
