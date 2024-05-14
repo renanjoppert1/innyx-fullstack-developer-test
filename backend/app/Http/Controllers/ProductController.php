@@ -69,9 +69,29 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
-        //
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = Str::random(10) . '.' . $image->getClientOriginalExtension();
+
+            $imageUploaded = $this->uploadImage($image, $imageName);
+
+            if ($imageUploaded === false) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Failed to upload image.'
+                ], 400);
+            }
+
+            $validated['image'] = 'products/' . $imageName;
+        }
+
+        $product->update($validated);
+        return response()->json($product);
+
     }
 
     /**
