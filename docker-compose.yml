@@ -59,26 +59,16 @@ services:
 
 
   # FOR STAGE OR PRODUCTION ENVIROMENT
-  # vue-app:
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/frontend.dockerfile
-  #   ports:
-  #     - "0:80"
-  #   volumes:
-  #     - ./frontend:/app
-  #     - /app/node_modules
-
-  # FOR DEV ENVIROMENT
-  vue-app-dev:
+  vue:
     build:
       context: .
-      dockerfile: ./docker/frontend-dev.dockerfile
+      dockerfile: ./docker/frontend.dockerfile
     ports:
-      - "0:8080"
+      - "0:80"
     volumes:
       - ./frontend:/app
       - /app/node_modules
+
 
 
 networks:
