@@ -19,11 +19,6 @@ class ProductController extends Controller
     {
         $data = Product::paginate();
 
-//        $data->getCollection()->transform(function ($product) {
-//            $product->image_url = $product->image_url;
-//            return $product;
-//        });
-
         return response()->json($data);
     }
 
