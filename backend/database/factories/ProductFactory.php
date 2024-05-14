@@ -38,7 +38,8 @@ class ProductFactory extends Factory
             'description' => $this->faker->sentence,
             'price' => $this->faker->randomFloat(2, 1, 100),
             'due_date' => $this->faker->dateTimeBetween('now', '+1 year'),
-            'image' => $imagePath
+            'image' => $imagePath,
+            'category_id' => Category::inRandomOrder()->first()->id
         ];
     }
 }
