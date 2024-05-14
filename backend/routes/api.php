@@ -9,8 +9,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+
 Route::group([
-    // 'middleware' => 'auth'
+     'middleware' => 'auth:sanctum'
 ], function () {
     Route::group([
         'as' => 'products.',
