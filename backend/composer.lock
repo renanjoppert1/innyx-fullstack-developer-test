@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c133b312fe180afc0f2b635022ad80ac",
+    "content-hash": "478ce0ee64d53243c65a22e98f746747",
     "packages": [
         {
             "name": "brick/math",
@@ -5893,6 +5893,41 @@
             "time": "2023-11-03T12:00:00+00:00"
         },
         {
+            "name": "guiador-digital/generate-laravel-architecture-copilot",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guiador-digital/generate-laravel-architecture-copilot.git",
+                "reference": "61a20c19fe48718a8377ed899b2f05f2213fab63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guiador-digital/generate-laravel-architecture-copilot/zipball/61a20c19fe48718a8377ed899b2f05f2213fab63",
+                "reference": "61a20c19fe48718a8377ed899b2f05f2213fab63",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "GuiadorDigital\\GenerateLaravelArchitectureCopilot\\GenerateLaravelArchitectureCopilotServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuiadorDigital\\GenerateLaravelArchitectureCopilot\\": "src/"
+                }
+            },
+            "description": "Um pacote Laravel para comandos Artisan que ajudam no desenvolvimento",
+            "support": {
+                "source": "https://github.com/guiador-digital/generate-laravel-architecture-copilot/tree/main",
+                "issues": "https://github.com/guiador-digital/generate-laravel-architecture-copilot/issues"
+            },
+            "time": "2024-02-19T01:28:29+00:00"
+        },
+        {
             "name": "hamcrest/hamcrest-php",
             "version": "v2.0.1",
             "source": {
@@ -8206,7 +8241,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "guiador-digital/generate-laravel-architecture-copilot": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
