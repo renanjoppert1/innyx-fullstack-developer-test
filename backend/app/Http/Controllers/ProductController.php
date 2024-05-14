@@ -22,12 +22,40 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
+    public function uploadImage($image, $imageName): bool
+    {
+        try {
+            $image->storeAs('public/products', $imageName);
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Image upload failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $image = $request->file('image');
+        $imageName = Str::random(10) . '.' . $image->getClientOriginalExtension();
+        $imageUploaded = $this->uploadImage($image, $imageName);
+
+        if ($imageUploaded === false) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Failed to upload image.'
+            ], 400);
+        }
+
+        $validated['image'] = 'products/' . $imageName;
+
+        $product = Product::create($validated);
+
+        return response()->json($product, 201);
     }
 
     /**
