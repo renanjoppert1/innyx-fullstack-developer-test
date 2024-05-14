@@ -14,6 +14,8 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
+    protected $appends = ['image_url'];
+
 
     public function getImageUrlAttribute()
     {
