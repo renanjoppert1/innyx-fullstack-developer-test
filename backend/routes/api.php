@@ -32,6 +32,7 @@ Route::group([
     ], function () {
         Route::post('/', [\App\Http\Controllers\CategoryController::class, 'store'])->name('store');
         Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index'])->name('index');
+        Route::get('/all', [\App\Http\Controllers\CategoryController::class, 'indexAll'])->name('index.all');
         Route::get('/{category}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('show');
         Route::put('/{category}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('update');
         Route::delete('/{category}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('destroy');
