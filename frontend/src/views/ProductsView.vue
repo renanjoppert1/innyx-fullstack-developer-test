@@ -159,8 +159,20 @@ const handleCreate = async () => {
         <v-table v-if="loading === false">
           <thead>
           <tr>
+            <th class="text-left tw-w-20">
+              
+            </th>
             <th class="text-left">
               Nome
+            </th>
+            <th class="text-left">
+              Valor
+            </th>
+            <th class="text-left">
+              Categoria
+            </th>
+            <th class="text-left">
+              Data de Validade
             </th>
             <th class="text-right">
               Ações
@@ -172,7 +184,11 @@ const handleCreate = async () => {
               v-for="row in tableData.data"
               :key="row.name"
           >
+            <td><img :src="row.image_url" class="tw-w-16" /></td>
             <td>{{ row.name }}</td>
+            <td>R${{ row.price }}</td>
+            <td>{{ row.category?.name }}</td>
+            <td>{{ row.due_date.split('-').reverse().join('/') }}</td>
             <td class="text-right">
               <v-btn variant="text">
                 <AppIcon icon="mdi-edit-box" height="24px" color="grey" @click="handleModalEdit(row)"/>
