@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = Category::paginate();
+        $data = Category::orderBy('id', 'desc')->paginate();
 
         return response()->json($data);
     }
