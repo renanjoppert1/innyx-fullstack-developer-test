@@ -98,3 +98,18 @@ senha => 123456
 email => user@innyx.com
 senha => 123456
 </pre>
+
+## Libaries Utilizadas
+Abaixo segue o motivo de cada lib que foi utilizada além do que já vem do framework usada tando frontend quanto backend
+
+### Backend
+andreaselia/laravel-api-to-postman: Biblioteca que gera collection do POSTMAN para as rotas de API de forma simlificada via terminal
+guiador-digital/generate-laravel-architecture-copilot: Ferramenta de desenvolvimento próprio que permite criar CRUDs completos com apenas 1 comando
+
+### Frontend
+@mdi/font: Carrega a icon font do material design
+axios: lib usada para fazer requisições HTTP
+material-design-icons-iconfont: utilizada para carregar o icon font do material design também
+vue-toastification: lib para disparar toast atrativos visualmente
+vuetify: lib para carregar componentes baseados no Material Design
+@iconify/vue: lib usada para carregar outros tipos de icones utilizando Iconify

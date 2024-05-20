@@ -73,7 +73,7 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('image') && $request->image != NULL) {
             $image = $request->file('image');
             $imageName = Str::random(10) . '.' . $image->getClientOriginalExtension();
 
@@ -102,7 +102,8 @@ class ProductController extends Controller
         $productImage = $product->image;
         $deleted = $product->delete();
 
-        if ($deleted === false) return response()->json(['message' => 'Erro ao excluir o produto'], 400);
+        if ($deleted === false)
+            return response()->json(['message' => 'Erro ao excluir o produto'], 400);
 
         if ($productImage && Storage::disk('public')->exists($productImage)) {
             Storage::disk('public')->delete($productImage);

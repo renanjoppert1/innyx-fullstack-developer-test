@@ -93,30 +93,83 @@ const handleDelete = async () => {
     })
 }
 
+const handleGetCategory = (categoryId) => {
+  const findCategory = categories.value.find((el) => categoryId == el.id)
+  return !!findCategory ? findCategory.id : null
+}
+
 const dataToEdit = ref<number | null>(null)
-const formEdit = ref<object>({ name: '' })
+const formEdit = ref<object>({
+  name: '',
+  description: '',
+  price: '',
+  due_date: '',
+  image_url: '',
+  image: '',
+  category_id: ''
+})
 const modalEdit = ref<boolean>(false)
 const loadingEdit = ref<boolean>(false)
+const editForm = ref(null)
 
 const handleModalEdit = (row: object) => {
   dataToEdit.value = row.id
   formEdit.value.name = row.name
-  formEdit.value.email = row.email
+  formEdit.value.description = row.description
+  formEdit.value.price = row.price
+  formEdit.value.due_date = row.due_date.split('-').reverse().join('/')
+  formEdit.value.image_url = row.image_url
+  formEdit.value.image = null
+  formEdit.value.category_id = handleGetCategory(row.category_id)
   modalEdit.value = true
 }
 
 const handleEdit = async () => {
+  const { valid } = await editForm.value.validate()
+  if (valid === false) {
+    toast.error('Há um erro no formulário. Verifique os campos e tente novamente')
+    return
+  }
+
+  let formData = new FormData()
+
+  for (let field of Object.entries(formEdit.value)) {
+    switch (field[0]) {
+      case 'due_date':
+        field[1] = field[1].split('/').reverse().join('-')
+        break
+
+      case 'price':
+        field[1] = field[1].toString().replace(',', '.')
+        break
+
+      default:
+        break
+    }
+    formData.append(field[0], field[1])
+  }
+
+  if (formEdit.value.image == null) {
+    formData.delete('image')
+  }
+
   loadingEdit.value = true
   await axios
-    .put(`${import.meta.env.VITE_API_URL}/products/${dataToEdit.value}`, formEdit.value, {
+    .post(`${import.meta.env.VITE_API_URL}/products/${dataToEdit.value}`, formData, {
       headers: { authorization: `Bearer ${localStorage.getItem('token')}` }
     })
     .then(async (res) => {
       toast.success('Produto alterado com sucesso!')
       dataToEdit.value = null
 
+      dataToEdit.value = null
       formEdit.value.name = ''
-      formEdit.value.email = ''
+      formEdit.value.description = ''
+      formEdit.value.price = ''
+      formEdit.value.due_date = ''
+      formEdit.value.image_url = ''
+      formEdit.value.image = null
+      formEdit.value.category_id = ''
 
       modalEdit.value = false
       await handleFetchData(1)
@@ -174,8 +227,6 @@ const handleCreate = async () => {
     }
     formData.append(field[0], field[1])
   }
-
-  console.log(formData)
 
   loadingCreate.value = true
   await axios
@@ -295,7 +346,11 @@ const handleCreate = async () => {
 
     <v-dialog v-model="modalEdit" width="400">
       <v-card max-width="400" title="Editar Produto">
-        <v-form @submit.prevent="handleEdit" class="tw-px-4 tw-py-3 tw-flex tw-flex-col tw-gap-4">
+        <v-form
+          ref="editForm"
+          @submit.prevent="handleEdit"
+          class="tw-px-4 tw-py-3 tw-flex tw-flex-col tw-gap-4"
+        >
           <v-text-field
             v-model="formEdit.name"
             hide-details="auto"
@@ -306,22 +361,53 @@ const handleCreate = async () => {
           ></v-text-field>
 
           <v-text-field
-            v-model="formEdit.email"
+            v-model="formEdit.description"
             hide-details="auto"
-            label="E-mail"
-            :rules="[() => !!formEdit.email || 'O e-mail é obrigatório']"
+            label="Descrição"
+            :rules="[() => !!formEdit.description || 'A descrição é obrigatória']"
             :readonly="loadingEdit"
             :loading="loadingEdit"
           ></v-text-field>
 
           <v-text-field
-            v-model="formEdit.password"
+            v-model="formEdit.price"
             hide-details="auto"
-            label="Senha"
-            type="password"
+            label="Preço"
+            :rules="[() => !!formEdit.price || 'O preço é obrigatório']"
             :readonly="loadingEdit"
             :loading="loadingEdit"
           ></v-text-field>
+
+          <v-text-field
+            v-model="formEdit.due_date"
+            hide-details="auto"
+            label="Vencimento"
+            :rules="[() => !!formEdit.due_date || 'O vencimento é obrigatório']"
+            :readonly="loadingEdit"
+            :loading="loadingEdit"
+          ></v-text-field>
+
+          <img v-if="!!formEdit.image_url" :src="formEdit.image_url" />
+
+          <v-file-input
+            v-model="formEdit.image"
+            hide-details="auto"
+            label="Imagem"
+            accept="image/*"
+          >
+          </v-file-input>
+
+          <v-select
+            v-model="formEdit.category_id"
+            label="Categoria"
+            hide-details="auto"
+            :rules="[() => !!formEdit.category_id || 'A categoria é obrigatória']"
+            :items="categories"
+            item-title="name"
+            item-value="id"
+            :readonly="loadingEdit"
+            :loading="loadingEdit"
+          ></v-select>
         </v-form>
 
         <template v-slot:actions>
